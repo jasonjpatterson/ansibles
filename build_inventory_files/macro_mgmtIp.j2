@@ -1,0 +1,19 @@
+{% macro leafBaseMgmtIp(original_ip) -%}
+{% set ipBase = original_ip[:-(original_ip.split('.')[-2]|length)] %}
+{{ ipBase }}
+{%- endmacro -%}
+
+{% macro leafHostMgmtIp(original_ip) -%}
+{% set lastOctet = original_ip.split('.')[-1] %}
+{{ lastOctet }}
+{%- endmacro -%}
+
+{% macro spineBaseMgmtIp(original_ip) -%}
+{% set ipBase = original_ip[:-(original_ip.split('.')[-2]|length)] %}
+{{ ipBase }}
+{%- endmacro -%}
+
+{% macro spineHostMgmtIp(original_ip) -%}
+{% set lastOctet = original_ip.split('.')[-1] %}
+{{ lastOctet }}
+{%- endmacro -%}

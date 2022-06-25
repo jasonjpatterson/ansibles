@@ -1,0 +1,12 @@
+- name: build list of leafs and spines
+  hosts: localhost
+  tasks:
+    - name: Read in deets.yml
+      include_vars:
+        file: deets.yml
+        name: config
+
+    - name: build device list from deets.yml and 1buildInventory.j2
+      template:
+        src: 1buildInventory.j2
+        dest: /Users/jpatterson/Documents/2022_Code/inventory.yml

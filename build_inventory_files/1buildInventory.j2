@@ -1,0 +1,62 @@
+{% from 'macro_mgmtIp.j2' import leafBaseMgmtIp, leafHostMgmtIp, spineBaseMgmtIp, spineHostMgmtIp %}
+{% set leafBaseMgmtIp =  leafBaseMgmtIp(config.devs.leafs.base_mgmt_ip) %}
+{% set leafHostMgmtIp = leafHostMgmtIp(config.devs.leafs.base_mgmt_ip) %}
+{% set spineBaseMgmtIp =  spineBaseMgmtIp(config.devs.spines.base_mgmt_ip) %}
+{% set spineHostMgmtIp = spineHostMgmtIp(config.devs.spines.base_mgmt_ip) %}
+---
+all:
+  vars:
+    ansible_python_interpreter: /Users/jpatterson/Documents/2022_code/venv/bin/python
+  children:
+    local:
+      hosts:
+        localhost
+      vars:
+        ansible_connection: local
+        ansbile_user: jpatterson
+        ansible_ssh_pass: P3pp3r101!
+    cvp:
+      hosts:
+        cv:
+          ansible_httpapi_host: 192.168.10.100
+          ansible_host: 192.168.10.100
+          ansible_user: cvadmin
+          ansible_password: cvadmin
+          ansible_connection: httpapi
+          ansible_httpapi_use_ssl: True
+          ansible_httpapi_validate_certs: False
+          ansible_network_os: eos
+          ansible_httpapi_port: 443
+
+    gns:
+      vars:
+        # ansible_connection: httpapi
+        ansible_become: yes
+        ansible_become_user: admin
+        ansible_become_method: enable
+        ansible_connection: network_cli
+        ansible_user: admin
+        ansible_ssh_user: admin
+        ansible_ssh_pass: admin
+        ansible_network_os: eos
+        ansible_httpapi_use_ssl: True
+        ansible_httpapi_validate_certs: False
+        ansible_password: admin
+      children:
+        leafs:
+          hosts:
+{% for leaf_num in range(2, config.devs.leafs.number + 2)%}
+{%- if leaf_num % 2 == 0 %}
+{%- set leaf_side = 'A' %}
+{%- else %}
+{%- set leaf_side = 'B' %}
+{%- endif %}
+            Leaf-{{leaf_num//2}}{{leaf_side}}:  
+              ansible_host: {{ leafBaseMgmtIp + ((leafHostMgmtIp|int) + (leaf_num -1 ))|string }}
+{% endfor %}
+        spines:
+          hosts:
+{% for spine_num in range(1, config.devs.spines.number + 1)%}
+            spine-{{spine_num}}:
+              ansible_host: {{ spineBaseMgmtIp + ((spineHostMgmtIp|int) + spine_num)|string }}
+{% endfor %}
