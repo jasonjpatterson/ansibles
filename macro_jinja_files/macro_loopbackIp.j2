@@ -1,0 +1,15 @@
+{#{% set original_ip = config.global.ipv4.loopback %}
+{# add length of 3rd and 4th octet and add 1 for dot notation 
+{% set ipadd = original_ip[:-(original_ip.split('.')[-2]|length + original_ip.split('.')[-1]|length + 1)]%}
+{{ ipadd }} #}
+ {#}
+{% macro ip(original_ip)%}
+{% set ipadd = original_ip[:-(original_ip.split('.')[-2]|length + original_ip.split('.')[-1]|length + 1)] %}
+{% endmacro %}
+#}
+
+{% macro ipbase() %}
+{% set original_ip = config.global.ipv4.loopback %}
+{% set ipadd = original_ip[:-(original_ip.split('.')[-2]|length + original_ip.split('.')[-1]|length + 1)] %}
+{{ ipadd }}
+{% endmacro %}
