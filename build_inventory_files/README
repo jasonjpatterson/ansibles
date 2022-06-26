@@ -1,3 +1,5 @@
 This repository will allow you to build a dynamic inventory file. 
-It uses the notion of jinja macros, which are very similar to python functions. 
+It uses the notion of jinja macros, which are very similar to python functions.
+Making a change to see what it does in git
+ 
 
