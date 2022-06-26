@@ -3,7 +3,7 @@
   tasks:
     - name: Read in deets.yml
       include_vars:
-        file: deets.yml
+        file: schema.yml
         name: config
 
     - name: build device list from deets.yml and 1buildInventory.j2
