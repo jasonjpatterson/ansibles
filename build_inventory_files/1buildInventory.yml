@@ -9,4 +9,4 @@
     - name: build device list from deets.yml and 1buildInventory.j2
       template:
         src: 1buildInventory.j2
-        dest: /Users/jpatterson/Documents/2022_Code/inventory.yml
+        dest: sample_inventory_from_1buildInventory.yml
