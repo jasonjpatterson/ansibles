@@ -6,23 +6,24 @@ event-handler test
       with open( '/tmp/test', 'w' ) as f:
          f.write( 'This is a test' )
       EOF
-event-handler test2
+event-handler veos-config
+   trigger on-config disabled
    action bash
-      rm /mnt/flash/veos-config
       touch /mnt/flash/veos-config
       chmod 777 /mnt/flash/veos-config
-      printf "%s\n" $'SERIALNUMBER='$HOSTNAME >> /mnt/flash/veos-config
-      printf "%s\n" $'SYSTEMMACADDR=001c.73'$((RANDOM % 99))'.'$((RANDOM % 9999)) >> /mnt/flash/veos-config
+      sleep 1
+      printf "%s\n%s\n" $'SERIALNUMBER='$HOSTNAME $'SYSTEMMACADDR=001c.73'$((RANDOM % 99))'.'$((RANDOM % 9999)) > /mnt/flash/veos-config
+      sleep1
       FastCli -c 'write memory' -p 15
+      sleep 1
       FastCli -c 'reload now' -p 15
       EOF
-   threshold 50 count 1
+   delay 60
+   threshold 60 count 1
    !
    trigger on-counters
-      poll interval 60
-      condition bashCmd."if test -f /mnt/flash/veos-config; then tracker=1; else tracker=0; fi; echo $tracker" < 1
-
-
+      poll interval 30
+      condition bashCmd."if test -f /mnt/flash/veos-config; then tracker=2; else tracker=1; fi; echo $tracker" == 1
 
 rm /mnt/flash/veos-config
 touch /mnt/flash/veos-config
