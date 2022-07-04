@@ -4,18 +4,22 @@ devs:
     base_name: Leaf
     base_mgmt_ip: 192.168.10.70
     uplinks:
+      ipv4: 10.0.0.0
+      mask: '/30'
       num: 2
       iface: 
         - eth1
         - eth2
+    mlag:
+      True
       
   spines:
     number: 2
     base_name: Spine
     base_mgmt_ip: 192.168.10.80
 global:
-  ipv4:
-    loopback: 10.255.0.0
-    uplinks: 10.0.0.0
+  loopback: 
+    ipv4: 10.255.0.0
+
     
     
