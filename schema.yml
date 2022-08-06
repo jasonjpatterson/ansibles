@@ -1,12 +1,12 @@
 devs:
   leafs:
-    number: 6
+    number: 4
     base_name: Leaf
     base_mgmt_ip: 192.168.10.70
     uplinks:
       ipv4: 10.0.0.0
       mask: '/30'
-      num: 2
+      number: 2
       iface: 
         - eth1
         - eth2
@@ -20,6 +20,7 @@ devs:
 global:
   loopback: 
     ipv4: 10.255.0.0
+  asn: 65000
 
     
     
